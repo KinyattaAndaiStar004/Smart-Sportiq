@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Player Dashboard</title>
+  <link rel="stylesheet" href="player-dashboard.css">
+  <script type="module" src="./player-dashboard.js" defer></script>
+</head>
+<body>
+  <header>
+    <h1>Player Dashboard</h1>
+    <button id="logout-btn">Logout</button>
+  </header>
+
+  <main>
+    <section class="welcome">
+      <h2>Welcome, <span id="player-name"></span><span id="player-name"</h2>
+      <p class="muted">Mark your attendance only when you're at the handball field.</p>
+    </section>
+
+    <section class="attendance">
+      <h3>Mark Attendance</h3>
+      <button id="mark-attendance" class="primary">Mark Present</button>
+      <p id="attendance-message" class="small"></p>
+    </section>
+
+    <section class="previous">
+      <h3>Your Previous Attendance</h3>
+      <ul id="attendance-list"></ul>
+    </section>
+  </main>
+</body>
+</html>

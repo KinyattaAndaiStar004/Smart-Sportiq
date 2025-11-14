@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Handball Captain Dashboard</title>
+    <!-- Load Tailwind CSS and Inter font -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Link external CSS file -->
+    <link rel="stylesheet" href="captain-dashboard.css">
+</head>
+<body>
+    <!-- Loading View -->
+    <div id="loading-view" class="fixed inset-0 flex flex-col items-center justify-center bg-white z-50">
+        <div class="loader mb-4"></div>
+        <p id="loading-message" class="text-lg text-gray-700">Authenticating Captain and connecting to database...</p>
+    </div>
+
+    <!-- Dashboard Main Content -->
+    <header>
+        <h1>Captain's Dashboard</h1>
+        <button id="logout-btn">Logout</button>
+    </header>
+
+    <main>
+        <section class="welcome">
+            <h2>Welcome, <span id="player-name">Captain...</span></h2>
+            <p class="muted">As Captain, you can monitor team attendance and your own status.</p>
+        </section>
+
+        <!-- Captain's Self-Attendance Section -->
+        <section class="attendance border-b pb-4 mb-4">
+            <h3 class="text-xl">Your Attendance Status</h3>
+            <button id="mark-attendance" class="primary">Mark Present</button>
+            <p id="attendance-message" class="small"></p>
+            <div class="my-4">
+                <h4 class="font-semibold text-sm mb-2 text-gray-600">Your Recent Records:</h4>
+                <ul id="personal-attendance-list" class="space-y-2">
+                    <li class="p-2 bg-gray-100 rounded-md text-gray-500 border-l-4 border-gray-400">Loading personal records...</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Team Overview Section -->
+        <section class="team-overview mt-6">
+            <h3 class="text-2xl font-bold mb-4 flex items-center">Team Overview & Performance <span id="team-loading" class="loader ml-3"></span></h3>
+            
+            <table class="min-w-full bg-white rounded-lg shadow-md overflow-hidden">
+                <thead class="bg-gray-200">
+                    <tr>
+                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Player (Role)</th>
+                        <th class="py-3 px-4 text-center text-sm font-semibold text-gray-600">Present (Last 7 Days)</th>
+                        <th class="py-3 px-4 text-center text-sm font-semibold text-gray-600">Goal Rate</th>
+                        <th class="py-3 px-4 text-center text-sm font-semibold text-gray-600">Rating</th>
+                    </tr>
+                </thead>
+                <tbody id="team-data-list">
+                    <!-- Team data will be inserted here by JavaScript -->
+                    <tr class="border-t border-gray-100"><td colspan="4" class="py-3 text-center text-gray-500">Loading team data...</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <!-- Link external JavaScript module -->
+    <script type="module" src="captain-dashboard.js"></script>
+</body>
+</html>
