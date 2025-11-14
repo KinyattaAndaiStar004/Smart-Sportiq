@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Players Attendance and Performance Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="auth-container">
+    <img src="./images/uoem-logo.png" alt="University of Embu Logo" class="logo">
+    <h2>Players Attendance and Performance Tracker</h2>
+
+    <form id="login-form">
+      <input type="email" id="login-email" placeholder="Email" required>
+      <input type="password" id="login-password" placeholder="Password" required autocomplete="current-password">
+      <button type="submit">Login</button>
+    </form>
+
+    <p><a href="#" id="forgot-password">Forgot Password?</a></p>
+    <p id="message"></p>
+    <p>New here? <a href="signup.html">Create an account</a></p>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+    import { firebaseConfig } from "./firebase-config.js";
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const loginForm = document.getElementById("login-form");
+    const message = document.getElementById("message");
+
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("login-email").value.trim();
+      const password = document.getElementById("login-password").value.trim();
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        const userDoc = await getDoc(doc(db, "users", user.uid));
+
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          const role = userData.role;
+
+          message.textContent = "✅ Login successful! Redirecting...";
+          message.style.color = "green";
+
+          setTimeout(() => {
+            if (role === "player") {
+              window.location.href = "./player/player-dashboard.html";
+            } else if (role === "captain") {
+              window.location.href = "./captain/captain-dashboard.html";
+            } else if (role === "coach") {
+              window.location.href = "./coach/coach-dashboard.html";
+            } else {
+              message.textContent = "⚠️ Role not recognized.";
+              message.style.color = "orange";
+            }
+          }, 1000);
+        } else {
+          message.textContent = "❌ User data not found in database.";
+          message.style.color = "red";
+        }
+      } catch (error) {
+        message.textContent = "❌ " + error.message;
+        message.style.color = "red";
+      }
+    });
+  </script>
+</body>
+</html>
