@@ -7,6 +7,8 @@
     <!-- Load Tailwind CSS and Inter font -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <!-- Link external CSS file -->
     <link rel="stylesheet" href="captain-dashboard.css">
@@ -26,8 +28,8 @@
 
     <main>
         <section class="welcome">
-            <h2>Welcome, <span id="player-name">Captain...</span></h2>
-            <p class="muted">As Captain, you can monitor team attendance and your own status.</p>
+            <h2><span id="player-name">Captain...</span></h2>
+            <p class="muted">As Captain, you can monitor team attendance and performance.</p>
         </section>
 
         <!-- Captain's Self-Attendance Section -->
@@ -45,22 +47,82 @@
 
         <!-- Team Overview Section -->
         <section class="team-overview mt-6">
-            <h3 class="text-2xl font-bold mb-4 flex items-center">Team Overview & Performance <span id="team-loading" class="loader ml-3"></span></h3>
+            <h3 class="text-2xl font-bold mb-4 flex items-center">Team Overview & Performance</h3>
             
-            <table class="min-w-full bg-white rounded-lg shadow-md overflow-hidden">
-                <thead class="bg-gray-200">
-                    <tr>
-                        <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Player (Role)</th>
-                        <th class="py-3 px-4 text-center text-sm font-semibold text-gray-600">Present (Last 7 Days)</th>
-                        <th class="py-3 px-4 text-center text-sm font-semibold text-gray-600">Goal Rate</th>
-                        <th class="py-3 px-4 text-center text-sm font-semibold text-gray-600">Rating</th>
-                    </tr>
-                </thead>
-                <tbody id="team-data-list">
-                    <!-- Team data will be inserted here by JavaScript -->
-                    <tr class="border-t border-gray-100"><td colspan="4" class="py-3 text-center text-gray-500">Loading team data...</td></tr>
-                </tbody>
-            </table>
+            <!-- Performance Filters -->
+            <div class="flex flex-wrap gap-3 mb-6 p-4 bg-gray-50 rounded-lg">
+                <div class="flex items-center">
+                    <span class="mr-2 text-gray-700 font-medium">Time Period:</span>
+                    <select id="timeFilter" class="border rounded px-3 py-1">
+                        <option value="all">All Time</option>
+                        <option value="7days">Last 7 Days</option>
+                        <option value="30days">Last 30 Days</option>
+                        <option value="90days">Last 90 Days</option>
+                        <option value="month">This Month</option>
+                    </select>
+                </div>
+                <div class="flex items-center">
+                    <span class="mr-2 text-gray-700 font-medium">Sort By:</span>
+                    <select id="sortFilter" class="border rounded px-3 py-1">
+                        <option value="attendance">Attendance %</option>
+                        <option value="goals">Goals Scored</option>
+                        <option value="rating">Performance Rating</option>
+                        <option value="name">Name</option>
+                    </select>
+                </div>
+                <button id="refreshBtn" class="ml-auto bg-gray-200 hover:bg-gray-300 px-4 py-1 rounded flex items-center">
+                    <i class="fas fa-sync-alt mr-2"></i> Refresh
+                </button>
+            </div>
+            
+            <!-- Statistics Summary -->
+            <div id="teamStats" class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+                <!-- Stats will be loaded dynamically -->
+                <div class="stats-card bg-blue-50 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-blue-600" id="totalPlayers">0</div>
+                    <div class="text-sm text-gray-600">Total Players</div>
+                </div>
+                <div class="stats-card bg-green-50 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-green-600" id="avgAttendance">0%</div>
+                    <div class="text-sm text-gray-600">Avg Attendance</div>
+                </div>
+                <div class="stats-card bg-purple-50 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-purple-600" id="avgGoals">0</div>
+                    <div class="text-sm text-gray-600">Avg Goals/Game</div>
+                </div>
+                <div class="stats-card bg-amber-50 p-4 rounded-lg text-center">
+                    <div class="text-2xl font-bold text-amber-600" id="avgRating">0.0</div>
+                    <div class="text-sm text-gray-600">Avg Rating</div>
+                </div>
+            </div>
+            
+            <!-- Team Performance Table -->
+            <div class="table-container overflow-x-auto">
+                <table class="min-w-full bg-white rounded-lg shadow-md overflow-hidden">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th class="py-3 px-4 text-left text-sm font-semibold text-gray-600">Player (Role)</th>
+                            <th class="py-3 px-4 text-center text-sm font-semibold text-gray-600">Total Attendance</th>
+                            <th class="py-3 px-4 text-center text-sm font-semibold text-gray-600">Attendance %</th>
+                            <th class="py-3 px-4 text-center text-sm font-semibold text-gray-600">Goals Scored</th>
+                            <th class="py-3 px-4 text-center text-sm font-semibold text-gray-600">Assists</th>
+                            <th class="py-3 px-4 text-center text-sm font-semibold text-gray-600">Performance Rating</th>
+                            <th class="py-3 px-4 text-center text-sm font-semibold text-gray-600">Last Seen</th>
+                        </tr>
+                    </thead>
+                    <tbody id="team-data-list">
+                        <!-- Team data will be inserted here by JavaScript -->
+                        <tr class="border-t border-gray-100">
+                            <td colspan="7" class="py-8 text-center">
+                                <div class="flex flex-col items-center justify-center">
+                                    <div class="loader mb-4"></div>
+                                    <p class="text-gray-500">Loading team performance data...</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </section>
 
     </main>

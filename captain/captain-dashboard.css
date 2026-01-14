@@ -147,3 +147,97 @@ ul li {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+/* NEW STYLES ADDED FOR PERFORMANCE FEATURES */
+
+.hidden {
+    display: none !important;
+}
+
+/* Progress bar styles */
+.progress-bar {
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: #e5e7eb;
+}
+
+.progress-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+/* Status badges */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+/* Table improvements */
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+th {
+    position: sticky;
+    top: 0;
+    background: #f3f4f6;
+    z-index: 10;
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+    .table-container {
+        margin: 0 -1rem;
+    }
+    
+    table {
+        font-size: 0.875rem;
+    }
+    
+    th, td {
+        padding: 8px 4px !important;
+    }
+}
+
+/* Filter styles */
+select {
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 6px 12px;
+    background: white;
+    font-size: 0.875rem;
+}
+
+select:focus {
+    outline: none;
+    ring: 2px;
+    ring-color: var(--accent);
+}
+
+/* Stats cards */
+.stats-card {
+    transition: transform 0.2s ease;
+}
+
+.stats-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Attendance percentage colors */
+.attendance-high {
+    background-color: #10b981 !important;
+}
+
+.attendance-medium {
+    background-color: #f59e0b !important;
+}
+
+.attendance-low {
+    background-color: #ef4444 !important;
+}
