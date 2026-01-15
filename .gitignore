@@ -1,2 +1,21 @@
+# Editor
 .vscode/
+
+# Node / npm
 node_modules/
+
+# Environment variables
+.env
+
+# Firebase
+.firebase/
+.firebaserc
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS
+.DS_Store
+Thumbs.db
