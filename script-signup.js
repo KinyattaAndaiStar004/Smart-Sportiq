@@ -13,50 +13,57 @@ const message = document.getElementById("message");
 signupForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const name = document.getElementById("signup-name").value;
-  const email = document.getElementById("signup-email").value;
+  const fullName = document.getElementById("signup-name").value.trim();
+  const email = document.getElementById("signup-email").value.trim();
   const password = document.getElementById("signup-password").value;
   const confirmPassword = document.getElementById("signup-confirm-password").value;
   const role = document.getElementById("signup-role").value;
 
   if (password !== confirmPassword) {
-    message.textContent = "❌ Passwords do not match!";
+    message.textContent = "Passwords do not match.";
     message.style.color = "red";
     return;
   }
 
   if (!role) {
-    message.textContent = "⚠️ Please select your role!";
+    message.textContent = "Please select your role.";
     message.style.color = "orange";
     return;
   }
 
   try {
-    // Only allow one coach or one captain
+    // Restrict to ONLY ONE coach or captain
     if (role === "coach" || role === "captain") {
       const q = query(collection(db, "users"), where("role", "==", role));
       const snapshot = await getDocs(q);
+
       if (!snapshot.empty) {
-        message.textContent = `❌ Only one ${role} is allowed.`;
+        message.textContent = `Only one ${role} is allowed in the system.`;
         message.style.color = "red";
         return;
       }
     }
 
+    // Create Firebase Auth account
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
+    // Create Firestore record in "users" collection
     await setDoc(doc(db, "users", user.uid), {
-      name,
-      email,
-      role
+      fullName: fullName,
+      email: email,
+      role: role
     });
 
-    message.textContent = "✅ Account created successfully!";
+    message.textContent = "Account created successfully.";
     message.style.color = "green";
-    setTimeout(() => window.location.href = "login.html", 1500);
+
+    setTimeout(() => {
+      window.location.href = "login.html";
+    }, 1500);
+
   } catch (error) {
-    message.textContent = "❌ " + error.message;
+    message.textContent = error.message;
     message.style.color = "red";
   }
 });
